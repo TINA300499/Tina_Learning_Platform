@@ -1,0 +1,14 @@
+{
+  "source_security": "PASS",
+  "secrets_scan": "PASS",
+  "credential_exposure": "PASS",
+  "js_syntax": "PASS",
+  "regression_suites": "PASS",
+  "backend_http_e2e": "PASS",
+  "public_repo_hygiene": "PASS",
+  "public_github_ready": true,
+  "removed_public_unsafe_files": [
+    "REMOVE_LOGIN_ACCOUNT_HINT_V14_FINAL.md",
+    "qa/login-credential-hint-regression.mjs"
+  ]
+}

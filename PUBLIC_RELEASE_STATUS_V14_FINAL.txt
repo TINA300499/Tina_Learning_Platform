@@ -1,0 +1,12 @@
+V14 FINAL PUBLIC RELEASE
+
+Source security       PASS
+Secrets scan          PASS
+Credential exposure   PASS
+JS syntax             PASS
+Regression suites     PASS
+Backend HTTP E2E      PASS
+Public repo hygiene   PASS
+
+PUBLIC_GITHUB_READY=true
+PERSONAL_RUNTIME_READY=true

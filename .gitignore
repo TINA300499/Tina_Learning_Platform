@@ -1,0 +1,26 @@
+# Tina Learning Platform — public repository exclusions
+.DS_Store
+Thumbs.db
+node_modules/
+.env
+.env.*
+!.env.example
+backend/.env
+backend/data/
+data/
+uploads/
+backups/
+secrets/
+private/
+*.sqlite
+*.sqlite3
+*.db
+*.log
+*.pem
+*.key
+*.p12
+*.pfx
+.backup-*/
+*.tar.gz
+coverage/
+.nyc_output/

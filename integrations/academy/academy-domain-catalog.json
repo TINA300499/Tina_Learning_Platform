@@ -1,0 +1,57 @@
+{
+  "schema": "tina-academy-domain-catalog-v1",
+  "domains": [
+    {
+      "id": "domain-1",
+      "title": "Language & Communication"
+    },
+    {
+      "id": "domain-2",
+      "title": "Cognitive & Behavioral Sciences"
+    },
+    {
+      "id": "domain-3",
+      "title": "Mathematics & Statistics"
+    },
+    {
+      "id": "domain-4",
+      "title": "Computer Science & Engineering"
+    },
+    {
+      "id": "domain-5",
+      "title": "Artificial Intelligence"
+    },
+    {
+      "id": "domain-6",
+      "title": "Natural Sciences"
+    },
+    {
+      "id": "domain-7",
+      "title": "Economics, Business & Finance"
+    },
+    {
+      "id": "domain-8",
+      "title": "Education & Learning"
+    },
+    {
+      "id": "domain-9",
+      "title": "Research & Scientific Practice"
+    },
+    {
+      "id": "domain-10",
+      "title": "Society & Humanities"
+    },
+    {
+      "id": "domain-11",
+      "title": "Law, Civics & Governance"
+    },
+    {
+      "id": "domain-12",
+      "title": "Systems & Organization"
+    },
+    {
+      "id": "domain-13",
+      "title": "Career & Personal Capability"
+    }
+  ]
+}

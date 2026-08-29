@@ -1,0 +1,88 @@
+{
+  "generatedAt": "2026-08-28T22:05:16Z",
+  "passed": 16,
+  "failed": 0,
+  "testDataResidual": false,
+  "results": [
+    {
+      "name": "health_sqlite_required",
+      "pass": true,
+      "detail": "{\"ok\":true,\"available\":true,\"required\":true,\"backend\":\"tina-v14-production-closure\",\"database\":\"sqlite\",\"schemaVersion\":2,\"time\":\"2026-08-28T22:05:16.218Z\"}"
+    },
+    {
+      "name": "auth_login",
+      "pass": true,
+      "detail": "{\"user\":{\"id\":\"14cea8db-d959-4b63-ab9f-82078e9e8257\",\"email\":\"superadmin\",\"username\":\"superadmin\",\"name\":\"Tina Superadmin\",\"roles\":[\"superadmin\"],\"primaryRole\":\"superadmin\",\"role\":\"superadmin\",\"status\":\"active\",\"lastLoginAt\":\"2026-08-28T22:05:16.264Z\"},\"activeRole\":\"superadmin\"}"
+    },
+    {
+      "name": "auth_session",
+      "pass": true,
+      "detail": "{\"user\":{\"id\":\"14cea8db-d959-4b63-ab9f-82078e9e8257\",\"email\":\"superadmin\",\"username\":\"superadmin\",\"name\":\"Tina Superadmin\",\"roles\":[\"superadmin\"],\"primaryRole\":\"superadmin\",\"activeRole\":\"superadmin\",\"role\":\"superadmin\"}}"
+    },
+    {
+      "name": "snapshot_and_legacy_import",
+      "pass": true,
+      "detail": "{\"ok\":true,\"snapshotId\":\"6aa525d5-431f-4767-b735-9a52ad782c54\",\"legacyUsersImported\":1}"
+    },
+    {
+      "name": "snapshot_restore_read",
+      "pass": true,
+      "detail": "{\"ok\":true,\"snapshot\":{\"tina.v14.users\":\"{\\\"users\\\": [{\\\"id\\\": \\\"test-student\\\", \\\"name\\\": \\\"Test Student\\\", \\\"email\\\": \\\"test.student@example.test\\\", \\\"role\\\": \\\"learner\\\", \\\"roles\\\": [\\\"learner\\\"], \\\"primaryRole\\\": \\\"learner\\\", \\\"status\\\": \\\"active\\\", \\\"passwordHash\\\": \\\"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb\\\"}]}\"},\"createdAt\":\"2026-08-28T22:05:16.270Z\"}"
+    },
+    {
+      "name": "telemetry_write",
+      "pass": true,
+      "detail": "{\"ok\":true,\"count\":1}"
+    },
+    {
+      "name": "telemetry_filter",
+      "pass": true,
+      "detail": "{\"ok\":true,\"total\":{\"events\":1,\"durationMs\":2500,\"users\":1},\"monthly\":[{\"month\":\"2026-08\",\"events\":1,\"durationMs\":2500}]}"
+    },
+    {
+      "name": "media_upload",
+      "pass": true,
+      "detail": "{\"ok\":true,\"id\":\"d4d85331-f325-48c8-bfc9-7f35b25ff336\",\"url\":\"/api/media/d4d85331-f325-48c8-bfc9-7f35b25ff336\",\"name\":\"sample.bin\",\"mime\":\"application/octet-stream\",\"size\":20}"
+    },
+    {
+      "name": "media_roundtrip_encrypted",
+      "pass": true,
+      "detail": "b'persistent-media-e2e'"
+    },
+    {
+      "name": "admin_user_create",
+      "pass": true,
+      "detail": "{\"ok\":true,\"user\":{\"id\":\"74bda577-31ad-440c-ac83-3e8d3bd76521\",\"email\":\"test.admin@example.test\",\"username\":\"test.admin@example.test\",\"name\":\"Test Admin\",\"roles\":[\"admin\"],\"primaryRole\":\"admin\",\"role\":\"admin\",\"status\":\"active\",\"lastLoginAt\":null}}"
+    },
+    {
+      "name": "admin_user_update",
+      "pass": true,
+      "detail": "{\"ok\":true,\"user\":{\"id\":\"74bda577-31ad-440c-ac83-3e8d3bd76521\",\"email\":\"test.admin@example.test\",\"username\":\"test.admin@example.test\",\"name\":\"Test Admin Updated\",\"roles\":[\"admin\"],\"primaryRole\":\"admin\",\"role\":\"admin\",\"status\":\"active\",\"lastLoginAt\":null}}"
+    },
+    {
+      "name": "backup_includes_media",
+      "pass": true,
+      "detail": "has_media=True"
+    },
+    {
+      "name": "same_origin_static_app",
+      "pass": true,
+      "detail": "200"
+    },
+    {
+      "name": "auth_logout",
+      "pass": true,
+      "detail": "{\"ok\":true}"
+    },
+    {
+      "name": "session_invalid_after_logout",
+      "pass": true,
+      "detail": "{\"error\":\"Authentication required\"}"
+    },
+    {
+      "name": "test_data_cleanup",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

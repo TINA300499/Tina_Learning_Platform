@@ -1,0 +1,71 @@
+{
+  "passed": 12,
+  "failed": 1,
+  "results": [
+    {
+      "name": "health",
+      "pass": true,
+      "detail": "{\"ok\": true, \"available\": true, \"required\": true, \"backend\": \"tina-v14-production-closure\", \"database\": \"sqlite\", \"schemaVersion\": 2, \"time\": \"2026-08-28T22:03:55.041Z\"}"
+    },
+    {
+      "name": "superadmin login",
+      "pass": true,
+      "detail": "{\"user\":{\"id\":\"36ef473f-fffe-42e9-97b3-e8e0898cd17a\",\"email\":\"superadmin\",\"username\":\"superadmin\",\"name\":\"Tina Superadmin\",\"roles\":[\"superadmin\"],\"primaryRole\":\"superadmin\",\"role\":\"superadmin\",\"status"
+    },
+    {
+      "name": "session cookie",
+      "pass": true,
+      "detail": "{\"user\":{\"id\":\"36ef473f-fffe-42e9-97b3-e8e0898cd17a\",\"email\":\"superadmin\",\"username\":\"superadmin\",\"name\":\"Tina Superadmin\",\"roles\":[\"superadmin\"],\"primaryRole\":\"superadmin\",\"activeRole\":\"superadmin\",\""
+    },
+    {
+      "name": "durable snapshot",
+      "pass": true,
+      "detail": "{\"ok\":true,\"snapshotId\":\"8d6c7306-0ec6-42a5-b0ba-d480d2b9e8dd\",\"legacyUsersImported\":1}"
+    },
+    {
+      "name": "telemetry write",
+      "pass": true,
+      "detail": "{\"ok\":true,\"count\":1}"
+    },
+    {
+      "name": "media upload",
+      "pass": true,
+      "detail": "{\"ok\":true,\"id\":\"a1e39a92-98e8-438f-9ef4-0efa4274992a\",\"url\":\"/api/media/a1e39a92-98e8-438f-9ef4-0efa4274992a\",\"name\":\"qa.txt\",\"mime\":\"text/plain\",\"size\":22}"
+    },
+    {
+      "name": "media read/decrypt",
+      "pass": true,
+      "detail": "b'TINA durable media e2e'"
+    },
+    {
+      "name": "server user create",
+      "pass": true,
+      "detail": "{\"ok\":true,\"user\":{\"id\":\"cd8a8cfc-2e94-4999-aa8c-5e44035896ab\",\"email\":\"qa.admin@example.test\",\"username\":\"qa.admin@example.test\",\"name\":\"QA Admin\",\"roles\":[\"admin\"],\"primaryRole\":\"admin\",\"role\":\"admi"
+    },
+    {
+      "name": "telemetry filter",
+      "pass": true,
+      "detail": "{\"ok\":true,\"total\":{\"events\":1,\"durationMs\":1234,\"users\":1},\"monthly\":[{\"month\":\"2026-08\",\"events\":1,\"durationMs\":1234}]}"
+    },
+    {
+      "name": "backup export",
+      "pass": true,
+      "detail": "tables=['users', 'client_snapshots', 'telemetry', 'media', 'audit', 'app_settings', 'schema_migrations']"
+    },
+    {
+      "name": "static same-origin app",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "chromium app boot",
+      "pass": false,
+      "detail": "rc=-6, choose=False, backend=False"
+    },
+    {
+      "name": "logout",
+      "pass": true,
+      "detail": "{\"ok\":true}"
+    }
+  ]
+}

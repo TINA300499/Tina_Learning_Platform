@@ -1,0 +1,3 @@
+Files excluded from the public release because they contained historical credential/disclosure material:
+REMOVE_LOGIN_ACCOUNT_HINT_V14_FINAL.md
+qa/login-credential-hint-regression.mjs
