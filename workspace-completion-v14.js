@@ -2183,7 +2183,7 @@ function installSuperadminEntryLink(){
 function superadminLoginPortal(){
  sessionStorage.removeItem("tina.v14.login.intent");
  document.documentElement.classList.add("authSurfaceActive");
- $("#app").innerHTML=`<div class="wrap superadminPortalWrap"><section class="card superadminPortalCard"><div class="superadminCrown">👑</div><div class="eyebrow">TINA · SUPERADMIN PORTAL</div><h1>System Owner Access</h1><p class="muted">Highest-authority access to Tina Learning Platform, Tina Academy, system governance, interfaces and audit history.</p>
+ $("#app").innerHTML=`<div class="wrap superadminPortalWrap"><section class="card superadminPortalCard"><div class="superadminCrown">👑</div><div class="eyebrow">TINA · SUPERADMIN PORTAL</div><h1>System Owner Access..</h1><p class="muted">Highest-authority access to Tina Learning Platform, Tina Academy, system governance, interfaces and audit history.</p>
  <div class="wsFormGrid superadminLoginForm">
  <label class="wsField wsFieldFull"><span>Superadmin Username</span><div class="credentialField"><input id="saLoginUser" autocomplete="username" value="superadmin"><button type="button" data-credential-toggle="saLoginUser" data-kind="username">Hide</button></div></label>
  <label class="wsField wsFieldFull"><span>Password</span><div class="credentialField"><input id="saLoginPass" type="password" autocomplete="current-password"><button type="button" data-credential-toggle="saLoginPass" data-kind="password">Show</button></div></label>
