@@ -172,6 +172,27 @@ check(
   }
 );
 
+
+check(
+  "transactional-qa-rollback",
+  ()=>{
+    assert.match(
+      ws,
+      /TINA_V14_DISPOSABLE_QA_TRANSACTIONAL_ROLLBACK/
+    );
+
+    assert.match(
+      ws,
+      /TinaDisposableQaClosure\?\.purge\?\.\(\)/
+    );
+
+    assert.match(
+      ws,
+      /scheduleSync\?\.\("disposable-qa-rollback"\)/
+    );
+  }
+);
+
 const passed=
   results.filter(x=>x.pass).length;
 

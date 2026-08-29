@@ -3061,6 +3061,19 @@ async function runDisposableSystemQA(){
  }catch(e){ok("QA runtime",false,e.message||String(e))}
  finally{
    keys.forEach(k=>{const v=snap[k];if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)});
+   /* TINA_V14_DISPOSABLE_QA_TRANSACTIONAL_ROLLBACK
+    * The pre-test local stores have now been restored.
+    * Purge only reserved disposable-QA identities, then publish
+    * the restored clean state through the normal backend bridge.
+    */
+   try{
+     window.TinaDisposableQaClosure?.purge?.();
+   }catch{}
+
+   try{
+     window.TinaBackend?.scheduleSync?.("disposable-qa-rollback");
+   }catch{}
+
    const residual=keys.some(k=>(localStorage.getItem(k)||"").includes("__tina_test__"));
    ok("Disposable test data removed",!residual);
    const report={generatedAt:now(),passed:results.filter(x=>x.pass).length,failed:results.filter(x=>!x.pass).length,results};
