@@ -1110,7 +1110,7 @@ function exportSuperadminBackup(){
 }
 function installActivityAudit(){
  document.addEventListener("click",e=>{const b=e.target.closest("button,a");if(!b)return;const text=(b.textContent||"").replace(/\s+/g," ").trim().slice(0,100);if(!text)return;auditEvent("ui.click",{label:text,id:b.id||"",view:b.dataset?.view||b.dataset?.roleTarget||b.dataset?.op||""})},true);
- 
+
 document.addEventListener("click",e=>{
  const t=e.target.closest('[data-view="academy"],[data-role-target="academy"],[data-side-target="academy"]');
  if(!t)return;
@@ -3515,4 +3515,131 @@ setTimeout(forceRoleLoginGate,0);
 setTimeout(forceRoleLoginGate,80);
 
 document.addEventListener("click",e=>{const b=e.target.closest("#themeBtn");if(!b)return;if(session()||isAdmin()){e.preventDefault();e.stopImmediatePropagation();themeStudioView()}},true);
+})();
+
+
+/* TINA_V14_DISPOSABLE_QA_RESIDUAL_CLOSURE
+ *
+ * Reserved QA objects use IDs/identities beginning "__tina_test__".
+ * Purge only that namespace.  Human-created content is never filtered merely
+ * because its title/body contains test-like words.
+ */
+(()=>{
+  const QA_PREFIX="__tina_test__";
+
+  const qaIdentity=v=>
+    typeof v==="string" &&
+    v.startsWith(QA_PREFIX);
+
+  const containsQaIdentity=obj=>{
+    if(!obj||typeof obj!=="object")return false;
+
+    return [
+      obj.id,
+      obj.userId,
+      obj.user_id,
+      obj.username,
+      obj.email,
+      obj.organizationId,
+      obj.organization_id,
+      obj.classId,
+      obj.class_id,
+      obj.assignmentId,
+      obj.assignment_id
+    ].some(qaIdentity);
+  };
+
+  const clean=value=>{
+    if(Array.isArray(value)){
+      return value
+        .filter(item=>!containsQaIdentity(item))
+        .map(clean);
+    }
+
+    if(value&&typeof value==="object"){
+      if(containsQaIdentity(value)){
+        return undefined;
+      }
+
+      const out={};
+
+      for(const [key,item] of Object.entries(value)){
+        const next=clean(item);
+
+        if(next!==undefined){
+          out[key]=next;
+        }
+      }
+
+      return out;
+    }
+
+    return value;
+  };
+
+  const purge=()=>{
+    let changed=0;
+
+    for(let i=0;i<localStorage.length;i++){
+      const key=localStorage.key(i);
+
+      if(!key)continue;
+
+      const raw=localStorage.getItem(key);
+
+      if(
+        !raw ||
+        !raw.includes(QA_PREFIX)
+      ){
+        continue;
+      }
+
+      try{
+        const parsed=JSON.parse(raw);
+        const cleaned=clean(parsed);
+        const next=JSON.stringify(cleaned);
+
+        if(next!==raw){
+          localStorage.setItem(key,next);
+          changed++;
+        }
+      }catch{
+        /*
+         * Never rewrite arbitrary non-JSON localStorage values.
+         * Disposable QA stores are JSON.
+         */
+      }
+    }
+
+    if(changed){
+      console.info(
+        "[Tina v14] Disposable QA residual state removed:",
+        changed
+      );
+    }
+
+    return changed;
+  };
+
+  /*
+   * Immediate cleanup handles an existing production browser.
+   * pageshow handles restored browser sessions without a polling loop.
+   * No MutationObserver and no automatic reload are introduced.
+   */
+  try{
+    purge();
+  }catch{}
+
+  window.addEventListener(
+    "pageshow",
+    ()=>{
+      try{purge()}catch{}
+    },
+    {passive:true}
+  );
+
+  window.TinaDisposableQaClosure={
+    purge,
+    prefix:QA_PREFIX
+  };
 })();

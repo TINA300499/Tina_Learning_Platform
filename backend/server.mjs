@@ -251,11 +251,84 @@ async function handleApi(req,res,url){
  if(req.method==="GET"&&url.pathname==="/api/me"){const s=requireSession(req,res);if(!s)return;return json(res,200,{user:{id:s.userId,email:s.username,username:s.username,name:s.name,roles:s.roles,primaryRole:s.primaryRole,activeRole:s.activeRole,role:s.activeRole}})}
  if(req.method==="POST"&&url.pathname==="/api/auth/switch-role"){const s=requireSession(req,res);if(!s)return;const b=await readBody(req),r=String(b.role||"");if(!s.roles.includes(r)&&!s.roles.includes("superadmin"))return json(res,403,{error:"Role not assigned"});db.prepare("UPDATE sessions SET active_role=?,last_seen_at=? WHERE token_hash=?").run(r,now(),s.tokenHash);audit(s,"auth.role.switch",r);return json(res,200,{ok:true,activeRole:r})}
 
- if(req.method==="POST"&&url.pathname==="/api/sync/snapshot"){
-  const s=requireSession(req,res);if(!s)return;const b=await readBody(req),snapshot=b.snapshot;if(!snapshot||typeof snapshot!=="object")return json(res,400,{error:"Invalid snapshot"});
-  const imported=upsertLegacyUsers(snapshot,s),id=uuid();db.prepare("INSERT INTO client_snapshots(id,user_id,created_at,schema_label,payload_enc,reason) VALUES(?,?,?,?,?,?)").run(id,s.userId,now(),String(b.schema||"v14"),encryptJSON(snapshot),String(b.reason||"sync"));pruneSnapshots(s.userId);audit(s,"snapshot.sync",id,{keys:Object.keys(snapshot).length,legacyUsersImported:imported});return json(res,200,{ok:true,snapshotId:id,legacyUsersImported:imported})
+
+/*
+ * v14 FINAL — Disposable QA persistence boundary
+ *
+ * Disposable System QA uses the reserved "__tina_test__" namespace.
+ * QA fixtures may exist temporarily in browser memory/localStorage while a
+ * disposable test is running, but they must never become production snapshot
+ * state.  This sanitizer is intentionally ID/identity based: normal user
+ * content containing words such as "Temporary" is not removed.
+ */
+const DISPOSABLE_QA_PREFIX="__tina_test__";
+
+function isDisposableQaIdentity(value){
+  return typeof value==="string" &&
+    value.startsWith(DISPOSABLE_QA_PREFIX);
+}
+
+function stripDisposableQaFixtures(value){
+  if(Array.isArray(value)){
+    return value
+      .filter(item=>{
+        if(!item||typeof item!=="object")return true;
+
+        return ![
+          item.id,
+          item.userId,
+          item.user_id,
+          item.username,
+          item.email,
+          item.organizationId,
+          item.organization_id,
+          item.classId,
+          item.class_id,
+          item.assignmentId,
+          item.assignment_id
+        ].some(isDisposableQaIdentity);
+      })
+      .map(stripDisposableQaFixtures);
+  }
+
+  if(value&&typeof value==="object"){
+    if([
+      value.id,
+      value.userId,
+      value.user_id,
+      value.username,
+      value.email,
+      value.organizationId,
+      value.organization_id,
+      value.classId,
+      value.class_id,
+      value.assignmentId,
+      value.assignment_id
+    ].some(isDisposableQaIdentity)){
+      return undefined;
+    }
+
+    const out={};
+
+    for(const [key,item] of Object.entries(value)){
+      const clean=stripDisposableQaFixtures(item);
+
+      if(clean!==undefined){
+        out[key]=clean;
+      }
+    }
+
+    return out;
+  }
+
+  return value;
+}
+
+if(req.method==="POST"&&url.pathname==="/api/sync/snapshot"){
+  const s=requireSession(req,res);if(!s)return;const b=await readBody(req),snapshot=b.snapshot;if(!snapshot||typeof snapshot!=="object")return json(res,400,{error:"Invalid snapshot"});const cleanSnapshot=stripDisposableQaFixtures(snapshot);
+  const imported=upsertLegacyUsers(cleanSnapshot,s),id=uuid();db.prepare("INSERT INTO client_snapshots(id,user_id,created_at,schema_label,payload_enc,reason) VALUES(?,?,?,?,?,?)").run(id,s.userId,now(),String(b.schema||"v14"),encryptJSON(cleanSnapshot),String(b.reason||"sync"));pruneSnapshots(s.userId);audit(s,"snapshot.sync",id,{keys:Object.keys(snapshot).length,legacyUsersImported:imported});return json(res,200,{ok:true,snapshotId:id,legacyUsersImported:imported})
  }
- if(req.method==="GET"&&url.pathname==="/api/sync/latest"){const s=requireSession(req,res);if(!s)return;const row=db.prepare("SELECT * FROM client_snapshots WHERE user_id=? ORDER BY created_at DESC LIMIT 1").get(s.userId);return json(res,200,{ok:true,snapshot:row?decryptJSON(row.payload_enc):null,createdAt:row?.created_at||null})}
+ if(req.method==="GET"&&url.pathname==="/api/sync/latest"){const s=requireSession(req,res);if(!s)return;const row=db.prepare("SELECT * FROM client_snapshots WHERE user_id=? ORDER BY created_at DESC LIMIT 1").get(s.userId);return json(res,200,{ok:true,snapshot:row?stripDisposableQaFixtures(decryptJSON(row.payload_enc)):null,createdAt:row?.created_at||null})}
 
  if(req.method==="POST"&&url.pathname==="/api/telemetry"){
   const s=requireSession(req,res);if(!s)return;const b=await readBody(req),events=Array.isArray(b.events)?b.events:[b];
