@@ -10,8 +10,12 @@ const APP_ROOT=path.resolve(HERE,"..");
 const DATA_DIR=path.resolve(process.env.TINA_DATA_DIR||path.join(HERE,"data"));
 const MEDIA_DIR=path.join(DATA_DIR,"media");
 const DB_PATH=path.join(DATA_DIR,"tina.sqlite");
-const PORT=Number(process.env.TINA_PORT||8787);
-const HOST=process.env.TINA_HOST||"127.0.0.1";
+// v14 FINAL deployment compatibility:
+// Railway injects PORT automatically and requires a publicly reachable bind.
+// Local production keeps the existing TINA_PORT / TINA_HOST behavior.
+const PORT=Number(process.env.PORT||process.env.TINA_PORT||8787);
+const HOST=process.env.TINA_HOST||
+  (process.env.RAILWAY_ENVIRONMENT ? "0.0.0.0" : "127.0.0.1");
 const COOKIE_SECURE=String(process.env.TINA_COOKIE_SECURE||"false")==="true";
 const MASTER=Buffer.from(process.env.TINA_MASTER_KEY_BASE64||"","base64");
 const SUPER_USER=(process.env.TINA_SUPERADMIN_USERNAME||"superadmin").trim().toLowerCase();
